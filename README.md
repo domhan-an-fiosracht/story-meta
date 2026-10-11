@@ -1,4 +1,4 @@
-# story-meta
+# Story Meta
 
 Structure rules and templates for universe repos, so every story and `meta/` folder parses the same way — and a future static-site generator can turn any universe repo into a themed site by swapping CSS, not parsers.
 
