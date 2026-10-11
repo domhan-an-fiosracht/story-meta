@@ -7,8 +7,6 @@ Structure rules and templates for universe repos, so every story and `meta/` fol
 
 ## Universes
 
-Every universe repo under [domhan-an-fiosracht](https://github.com/domhan-an-fiosracht).
-
 | Universe | Tagline | Description |
 |---|---|---|
 | [Porchlight](https://github.com/domhan-an-fiosracht/porchlight) | The lights went out. Somebody has to turn them back on. | Cryptids lived quietly inside human cities until a zombie virus broke the masquerade at its ugliest — humanity's first look at them was infected werewolves rampaging on phone footage. Survivors on both sides rebuild with no map of who's dangerous, or who's doomed. |
