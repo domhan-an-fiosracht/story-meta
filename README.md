@@ -1,9 +1,9 @@
 # story-meta
 
-Structure rules and templates for story repos, so every story's `meta/` folder parses the same way — and a future static-site generator can turn any story repo into a themed site by swapping CSS, not parsers.
+Structure rules and templates for universe repos, so every story and `meta/` folder parses the same way — and a future static-site generator can turn any universe repo into a themed site by swapping CSS, not parsers.
 
 - **[STRUCTURE.md](STRUCTURE.md)** — the layout, routing rules, frontmatter schema, and content conventions.
-- **[templates/](templates/)** — starting files for a new story's `meta/` folder.
+- **[templates/](templates/)** — starting files for a new universe repo, story, and `meta/` folder.
 - **[STORIES.md](STORIES.md)** — index of every story repo.
 
 ## Status
