@@ -2,8 +2,6 @@
 
 The layout every universe repo follows: its stories and its `meta/` folders. The goal is a repo that reads well on GitHub *and* parses mechanically for the static-site generator: predictable paths, frontmatter where a machine reads it, links everywhere.
 
-Reference implementation: [shipfall](https://github.com/domhan-an-fiosracht/shipfall).
-
 ## Layout
 
 ```
