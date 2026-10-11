@@ -1,15 +1,17 @@
 # Story meta structure
 
-The layout every story repo's `meta/` folder follows. The goal is a folder that reads well on GitHub *and* parses mechanically for the static-site generator: predictable paths, frontmatter on content pages, links everywhere.
+The layout every universe repo follows: its stories and its `meta/` folders. The goal is a folder that reads well on GitHub *and* parses mechanically for the static-site generator: predictable paths, frontmatter on content pages, links everywhere.
 
 Reference implementation: [shipfall/meta](https://github.com/domhan-an-fiosracht/shipfall/tree/main/meta).
 
 ## Layout
 
 ```
-<story-repo>/
+<universe-repo>/
   story/
-    chapter-01.md …          # the chapters themselves
+    NN-<story-slug>/         # one folder per story; NN = reading order
+      chapter-01.md …        # the chapters themselves
+      meta/                  # optional; only what this story needs to narrow
   meta/
     README.md                # index: map of everything + conventions + current-state line
     universe.md              # setting, factions, systems, glossary
@@ -29,6 +31,8 @@ Reference implementation: [shipfall/meta](https://github.com/domhan-an-fiosracht
 
 ## Routing rules
 
+- **Stories live in `story/NN-<story-slug>/`.** The number prefix sets reading order, so renumbering is a rename. A universe with one story still gets a folder (`story/01-huntress/`).
+- **Universe `meta/` is the default; a story's `meta/` narrows it.** Same file names and layout, but a file only exists there when that story needs to say something more specific — its own `voice.md`, `timeline.md`, or `threads.md`. Never copy a universe file down; the one-file rule spans both levels.
 - **People live in `characters/`, places in `places/`** — a place file links to its residents, never hosts them. (A settlement can have both: `places/reedsport.md` and `characters/reedsport.md`; folder-scoped routes keep slugs distinct.)
 - **Substantial character → own file.** Texture character → a `###` heading in `supporting.md` or a group file, so it's still linkable.
 - **Group pages** (a family, a pair) stay short: a line of context and links to the member files. `characters/README.md` lists *every* named character and links through the groups.
