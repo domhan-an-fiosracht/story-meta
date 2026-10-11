@@ -21,7 +21,7 @@ Reference implementation: [shipfall](https://github.com/domhan-an-fiosracht/ship
     universe.md              # setting, factions, systems, glossary
     timeline.md              # optional event spine
     voice.md                 # style guide + known failure modes
-    threads.md               # open threads, boxes, Chekhov inventory
+    threads.md               # open threads / Chekhov inventory
     <topic>.md               # optional standalone lore specs (e.g. a writing system)
     characters/
       README.md              # full roster, every named character, linked
@@ -98,7 +98,6 @@ Keep it minimal — the generator themes on `type`, titles on `name`, and builds
 - **[implied]** / **[unconfirmed]** marks what the text points at but never states — never silently promoted to canon.
 - **Short lines.** One fact per bullet; a bullet that needs three em-dashes is three bullets. Long portraits get `##`/`###` sections (Vitals / Voice / History / Arc / Open).
 - **Resolved threads** are struck through in `threads.md` (`~~thread~~ — **resolved (ch N):** …`) with a link to where the resolution now lives. The strikethrough is the changelog.
-- **Boxes** are questions kept open on purpose, under their own heading in `threads.md`: **unopened** (no take may resolve it) or **undecided** (open to exploration, not canon until the author rules).
 - **Hyperlinks over repetition**: relative links, including `#heading` anchors into group files.
 - Quote the manuscript sparingly — short fragments as voice anchors, not paragraphs.
 - Spoiler policy: meta is written for the author; it spoils everything it knows. The generator decides what's public.

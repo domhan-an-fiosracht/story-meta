@@ -9,7 +9,7 @@ Reference material for keeping every story in this universe consistent. Structur
 | [universe.md](universe.md) | Setting, factions, systems, glossary |
 | [timeline.md](timeline.md) | Event spine (delete this row if there's no timeline) |
 | [voice.md](voice.md) | What the books sound like, and their known failure modes |
-| [threads.md](threads.md) | Open threads, boxes, promises to the reader, Chekhov inventory |
+| [threads.md](threads.md) | Open threads, promises to the reader, Chekhov inventory |
 | [characters/](characters/README.md) | Full roster |
 | [places/](places/README.md) | Index of places |
 
