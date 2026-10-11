@@ -1,11 +1,11 @@
 ---
-name: <Display Name>
+name: <Real Name>
 type: character
-aka: [<nickname>, <title>]
+aka: [<nickname>, <title>, <codename>]
 group: <group-slug>   # optional — delete if none
 ---
 
-# <Display Name>
+# <Real Name>
 
 One or two sentences: who this is, their role, how they're addressed. Link their [group](<group-slug>.md) and home [place](../places/<place>.md).
 
