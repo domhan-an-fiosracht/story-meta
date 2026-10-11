@@ -4,7 +4,7 @@ Structure rules and templates for story repos, so every story's `meta/` folder p
 
 - **[STRUCTURE.md](STRUCTURE.md)** — the layout, routing rules, frontmatter schema, and content conventions.
 - **[templates/](templates/)** — starting files for a new story's `meta/` folder.
-- **[STORIES.md](STORIES.md)** — index of every story repo: description, universe, layout.
+- **[STORIES.md](STORIES.md)** — index of every story repo.
 
 ## Status
 
