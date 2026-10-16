@@ -2,3 +2,4 @@ node_modules/
 dist/
 .astro/
 story-content
+public/themes/repo.css

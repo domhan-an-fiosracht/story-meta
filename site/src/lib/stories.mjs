@@ -1,6 +1,6 @@
 import { storySlug } from "./routes.mjs";
 
-// Entry ids look like "01-huntress/chapter-12", "01-huntress/README",
+// Entry ids look like "01-crossing/chapter-12", "01-crossing/README",
 // or "02-foo/2035/2035-03-17-01-harper" for scene stories.
 export function parseStoryEntry(entry) {
   const [dir, ...rest] = entry.id.split("/");

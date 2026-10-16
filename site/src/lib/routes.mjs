@@ -3,7 +3,7 @@
 import path from "node:path";
 
 export function storySlug(dirName) {
-  // "01-huntress" -> "huntress"
+  // "01-crossing" -> "crossing"
   return dirName.replace(/^\d+-/, "");
 }
 

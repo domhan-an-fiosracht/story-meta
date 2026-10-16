@@ -34,7 +34,7 @@ The layout every universe repo follows: its stories and its `meta/` folders. The
 
 ## Routing rules
 
-- **Stories live in `story/NN-<story-slug>/`.** The number prefix sets reading order, so renumbering is a rename. A universe with one story still gets a folder (`story/01-huntress/`).
+- **Stories live in `story/NN-<story-slug>/`.** The number prefix sets reading order, so renumbering is a rename. A universe with one story still gets a folder (`story/01-crossing/`).
 - **Universe `meta/` is the default; a story's `meta/` narrows it.** Same file names and layout, but a file only exists there when that story needs to say something more specific — its own `voice.md`, `timeline.md`, or `threads.md`, or a story-only `<topic>.md` like `beats.md`. Never copy a universe file down; the one-file rule spans both levels.
 - **People live in `characters/`, places in `places/`** — a place file links to its residents, never hosts them. (A settlement can have both: `places/reedsport.md` and `characters/reedsport.md`; folder-scoped routes keep slugs distinct.)
 - **One slug per character.** It's the name the narration uses (`harper`, not `rebecca-reyes`), with a surname only to break a collision. The same slug names their file, fills a scene's `<pov>`, and appears in `characters:` lists. The slug is only a key: the character's `name` is still their real name.

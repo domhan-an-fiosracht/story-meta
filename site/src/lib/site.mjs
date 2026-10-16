@@ -1,6 +1,14 @@
 import { getCollection } from "astro:content";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-export const THEME = import.meta.env.THEME ?? process.env.THEME ?? "default";
+// Theme precedence: THEME env override > the universe repo's own theme.css
+// (copied in by scripts/link-story.mjs as themes/repo.css) > quiet default.
+const repoTheme = existsSync(
+  fileURLToPath(new URL("../../public/themes/repo.css", import.meta.url))
+);
+export const THEME =
+  import.meta.env.THEME ?? process.env.THEME ?? (repoTheme ? "repo" : "default");
 
 export async function universeName() {
   const roots = await getCollection("root");
