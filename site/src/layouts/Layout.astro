@@ -1,5 +1,4 @@
 ---
-import "../styles/base.css";
 import { THEME, universeName } from "../lib/site.mjs";
 
 const { title, section } = Astro.props;
@@ -19,6 +18,8 @@ const nav = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} — ${name}` : name}</title>
+    <link rel="stylesheet" href="/base.css" />
+    <!-- Theme loads after base so its :root tokens win the cascade. -->
     <link rel="stylesheet" href={`/themes/${THEME}.css`} />
   </head>
   <body>
