@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /site
+    schedule:
+      interval: monthly
+    groups:
+      javascript-dependencies:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 7
