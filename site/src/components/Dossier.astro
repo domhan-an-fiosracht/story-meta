@@ -1,0 +1,22 @@
+---
+import { render } from "astro:content";
+
+const { entry, groupBase } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data ?? {};
+const bodyH1 = (entry.body ?? "").match(/^#\s+(.+)\s*$/m)?.[1];
+const title = bodyH1 ?? d.name ?? entry.id;
+---
+<div class="ledger">
+  <h1>{title}</h1>
+  {d.aka?.length > 0 && <p class="aka">also filed as {d.aka.join(", ")}</p>}
+  {(d.type || d.group) && (
+    <p class="filing">
+      {d.type}
+      {d.group && groupBase && <> — of <a href={`${groupBase}${d.group}/`}>{d.group}</a></>}
+    </p>
+  )}
+</div>
+<div class="prose hide-lead-h1">
+  <Content />
+</div>

@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import { groupStories, partTitle, bodyStartsWithHeading } from "../../../lib/stories.mjs";
+
+export async function getStaticPaths() {
+  const stories = groupStories(await getCollection("stories"));
+  return stories.map((s) => ({ params: { story: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const Content = s.readme ? (await render(s.readme)).Content : null;
+const name = s.readme?.data?.name ?? s.slug;
+---
+<Layout title={name} section="stories">
+  <div class="prose">
+    {!(s.readme && bodyStartsWithHeading(s.readme)) && <h1>{name}</h1>}
+    {Content && <Content />}
+    <h2>Contents</h2>
+  </div>
+  <ul class="toc">
+    {s.parts.map((p) => (
+      <li><a href={`/stories/${s.slug}/${p.id}/`}>{partTitle(p)}</a></li>
+    ))}
+  </ul>
+</Layout>

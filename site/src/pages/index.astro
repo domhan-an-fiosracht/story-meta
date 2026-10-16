@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { groupStories } from "../lib/stories.mjs";
+
+const roots = await getCollection("root");
+const readme = roots.find((e) => e.id === "readme");
+const Content = readme ? (await render(readme)).Content : null;
+const stories = groupStories(await getCollection("stories"));
+---
+<Layout>
+  <div class="prose">{Content && <Content />}</div>
+  <h2>Read</h2>
+  <ul class="toc">
+    {stories.map((s) => (
+      <li>
+        <a href={`/stories/${s.slug}/`}>{s.readme?.data?.name ?? s.slug}</a>
+        <span class="hint">{s.parts.length} {s.parts[0]?.kind === "scene" ? "scenes" : "chapters"}</span>
+      </li>
+    ))}
+  </ul>
+</Layout>

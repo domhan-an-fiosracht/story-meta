@@ -1,0 +1,11 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const entries = await getCollection("lore");
+const readme = entries.find((e) => e.id === "readme");
+const Content = readme ? (await render(readme)).Content : null;
+---
+<Layout title="Meta" section="meta">
+  <div class="prose">{Content ? <Content /> : <h1>Meta</h1>}</div>
+</Layout>

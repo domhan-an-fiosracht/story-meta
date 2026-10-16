@@ -1,0 +1,22 @@
+/* Shipfall — the field ledger. PNW night, fog paper, lantern light. */
+:root {
+  --bg: #161d1a;
+  --surface: #26302a;
+  --ink: #d9d7cb;
+  --ink-strong: #f0eee2;
+  --ink-soft: #949b8d;
+  --accent: #d29a4b;
+  --mark: #a4544a;
+  --rule: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ece9db;
+    --surface: #dfdccb;
+    --ink: #2c332c;
+    --ink-strong: #181e18;
+    --ink-soft: #66705f;
+    --accent: #a06a24;
+    --rule: color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+}

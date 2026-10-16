@@ -1,0 +1,44 @@
+---
+import "../styles/base.css";
+import { THEME, universeName } from "../lib/site.mjs";
+
+const { title, section } = Astro.props;
+const name = await universeName();
+const nav = [
+  ["/stories/", "Stories", "stories"],
+  ["/characters/", "Characters", "characters"],
+  ["/places/", "Places", "places"],
+  ["/universe/", "Universe", "universe"],
+  ["/threads/", "Threads", "threads"],
+  ["/meta/", "Meta", "meta"],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} — ${name}` : name}</title>
+    <link rel="stylesheet" href={`/themes/${THEME}.css`} />
+  </head>
+  <body>
+    <header class="site">
+      <div class="frame">
+        <a class="sitename" href="/">{name}</a>
+        <nav class="primary">
+          {nav.map(([href, label, key]) => (
+            <a href={href} aria-current={section === key ? "page" : undefined}>{label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <div class="frame">
+      <main>
+        <slot />
+      </main>
+    </div>
+    <footer class="site">
+      <div class="frame">Built from the repo's meta — one fact per file, linked everywhere.</div>
+    </footer>
+  </body>
+</html>

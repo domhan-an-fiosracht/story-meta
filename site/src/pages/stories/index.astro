@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { groupStories, bodyStartsWithHeading } from "../../lib/stories.mjs";
+
+const stories = groupStories(await getCollection("stories"));
+const rendered = await Promise.all(
+  stories.map(async (s) => ({ s, Content: s.readme ? (await render(s.readme)).Content : null }))
+);
+---
+<Layout title="Stories" section="stories">
+  {rendered.map(({ s, Content }) => (
+    <section class="prose" style="margin-bottom:2.5rem">
+      {!(s.readme && bodyStartsWithHeading(s.readme)) && (
+        <h1>{s.readme?.data?.name ?? s.slug}</h1>
+      )}
+      {Content && <Content />}
+      <p>
+        <a href={`/stories/${s.slug}/`}>
+          Table of contents — {s.parts.length} {s.parts[0]?.kind === "scene" ? "scenes" : "chapters"}
+        </a>
+      </p>
+    </section>
+  ))}
+</Layout>
