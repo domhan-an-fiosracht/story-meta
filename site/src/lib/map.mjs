@@ -35,7 +35,7 @@ export async function mappedRoutes() {
   const places = await getCollection("places");
   const routes = [];
   for (const e of places) {
-    if (e.id === "readme" || !Array.isArray(e.data?.routes)) continue;
+    if (!Array.isArray(e.data?.routes)) continue; // the places README may carry region-wide routes
     for (const r of e.data.routes) {
       if (!Array.isArray(r?.path) || r.path.length < 2) continue;
       routes.push({ label: r.label ?? "", kind: r.kind === "paved" ? "paved" : "trail", path: r.path });

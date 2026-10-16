@@ -37,6 +37,7 @@ const routes = await mappedRoutes();
 
       const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#b0885a";
       const soft = getComputedStyle(document.documentElement).getPropertyValue("--ink-soft").trim() || "#9a988f";
+      const labeled = [];
       for (const r of routes) {
         const paved = r.kind === "paved";
         const line = L.polyline(r.path, {
@@ -46,8 +47,26 @@ const routes = await mappedRoutes();
           dashArray: paved ? null : "2 7",
           lineCap: "round",
         }).addTo(map);
-        if (r.label) line.bindTooltip(r.label, { sticky: true, className: "map-tooltip" });
+        if (r.label) {
+          line.bindTooltip(r.label, {
+            permanent: true,
+            direction: "center",
+            className: `map-route-label map-route-label--${r.kind}`,
+          });
+          labeled.push(line);
+        }
       }
+      // A label earns its place only when its road is big enough on screen.
+      const updateRouteLabels = () => {
+        for (const line of labeled) {
+          const b = line.getBounds();
+          const p1 = map.latLngToContainerPoint(b.getNorthEast());
+          const p2 = map.latLngToContainerPoint(b.getSouthWest());
+          const el = line.getTooltip()?.getElement();
+          if (el) el.style.display = Math.hypot(p1.x - p2.x, p1.y - p2.y) < 90 ? "none" : "";
+        }
+      };
+      map.on("zoomend moveend", updateRouteLabels);
 
       const bounds = [];
       for (const m of markers) {
@@ -65,6 +84,7 @@ const routes = await mappedRoutes();
       }
       // extra bottom padding: the name labels hang below the icons
       map.fitBounds(bounds, { paddingTopLeft: [40, 40], paddingBottomRight: [40, 75], maxZoom: 9 });
+      updateRouteLabels();
     }
   </script>
 </Layout>
