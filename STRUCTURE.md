@@ -94,7 +94,7 @@ map:
   - { label: Sparta, anchor: sparta, lat: 42.93, lng: -123.28, glyph: wall }
 ```
 
-`glyph` names a marker icon from the generator's set (`gate`, `wall`, `furrow`, `river`, `ear`, `tree`, `camp`); omit it for a plain pin. Coordinates are real-world anchors and can stay provisional — move them as canon firms up.
+`glyph` names a marker icon from the generator's set (`gate`, `wall`, `furrow`, `river`, `ear`, `tree`, `camp`, `site`); omit it for a plain pin. Coordinates are real-world anchors and can stay provisional — move them as canon firms up.
 
 A place file may also carry `routes` — roads or trails drawn as lines on the same map:
 

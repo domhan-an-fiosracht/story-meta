@@ -20,6 +20,8 @@ export const GLYPHS = {
   tree: wrap('<path d="M12 3 L7 11 H10 L5 18 H19 L14 11 H17 Z"/><path d="M12 18 V22"/>'),
   // a tent
   camp: wrap('<path d="M4 19 L12 5 L20 19"/><path d="M9 19 L12 13.5 L15 19"/>'),
+  // an unfinished enclosure: walls up, open top — not done being a place
+  site: wrap('<path d="M5 4 V19 H19 V4"/><path d="M8 13 Q12 11 16 13"/>'),
   // the fallback
   pin: wrap('<circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>'),
 };
