@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { mappedPlaces } from "../lib/map.mjs";
+import { mappedPlaces, mappedRoutes } from "../lib/map.mjs";
 import { glyphSvg } from "../lib/glyphs.mjs";
 
 const markers = (await mappedPlaces()).map((m) => ({ ...m, svg: glyphSvg(m.glyph) }));
+const routes = await mappedRoutes();
 ---
 <Layout title="Map" section="map">
   <article class="prose">
@@ -19,13 +20,13 @@ const markers = (await mappedPlaces()).map((m) => ({ ...m, svg: glyphSvg(m.glyph
       <div id="territory"></div>
     </div>
   )}
-  <script type="application/json" id="map-data" set:html={JSON.stringify(markers)} />
+  <script type="application/json" id="map-data" set:html={JSON.stringify({ markers, routes })} />
   <script>
     import L from "leaflet";
     import "leaflet/dist/leaflet.css";
 
     const el = document.getElementById("territory");
-    const markers = JSON.parse(document.getElementById("map-data").textContent);
+    const { markers, routes } = JSON.parse(document.getElementById("map-data").textContent);
     if (el && markers.length) {
       const map = L.map(el, { scrollWheelZoom: false, maxZoom: 13, attributionControl: true });
       map.attributionControl.setPrefix("");
@@ -33,6 +34,20 @@ const markers = (await mappedPlaces()).map((m) => ({ ...m, svg: glyphSvg(m.glyph
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         { attribution: "Imagery &copy; Esri &amp; contributors", maxZoom: 13 }
       ).addTo(map);
+
+      const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#b0885a";
+      const soft = getComputedStyle(document.documentElement).getPropertyValue("--ink-soft").trim() || "#9a988f";
+      for (const r of routes) {
+        const paved = r.kind === "paved";
+        const line = L.polyline(r.path, {
+          color: paved ? soft : accent,
+          weight: paved ? 2 : 2.5,
+          opacity: paved ? 0.6 : 0.75,
+          dashArray: paved ? null : "2 7",
+          lineCap: "round",
+        }).addTo(map);
+        if (r.label) line.bindTooltip(r.label, { sticky: true, className: "map-tooltip" });
+      }
 
       const bounds = [];
       for (const m of markers) {

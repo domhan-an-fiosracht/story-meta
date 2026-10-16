@@ -5,6 +5,11 @@ import { getCollection } from "astro:content";
 //   map: [{ label, anchor?, lat, lng, glyph? }]    — a cluster file: several markers,
 //     each linking to its heading anchor on the place's page.
 // glyph names one of src/lib/glyphs.mjs; omitted means the plain pin.
+//
+// A place file may also carry routes (roads, rivers-as-routes, trails):
+//   routes:
+//     - { label: The highway, kind: trail, path: [[lat, lng], [lat, lng], ...] }
+// kind: "trail" draws dashed (dirt), "paved" solid; omitted means trail.
 export async function mappedPlaces() {
   const places = await getCollection("places");
   const markers = [];
@@ -24,4 +29,17 @@ export async function mappedPlaces() {
     }
   }
   return markers;
+}
+
+export async function mappedRoutes() {
+  const places = await getCollection("places");
+  const routes = [];
+  for (const e of places) {
+    if (e.id === "readme" || !Array.isArray(e.data?.routes)) continue;
+    for (const r of e.data.routes) {
+      if (!Array.isArray(r?.path) || r.path.length < 2) continue;
+      routes.push({ label: r.label ?? "", kind: r.kind === "paved" ? "paved" : "trail", path: r.path });
+    }
+  }
+  return routes;
 }

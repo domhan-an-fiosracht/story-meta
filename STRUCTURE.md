@@ -96,6 +96,15 @@ map:
 
 `glyph` names a marker icon from the generator's set (`gate`, `wall`, `furrow`, `river`, `ear`, `tree`, `camp`); omit it for a plain pin. Coordinates are real-world anchors and can stay provisional — move them as canon firms up.
 
+A place file may also carry `routes` — roads or trails drawn as lines on the same map:
+
+```yaml
+routes:
+  - { label: The highway, kind: trail, path: [[43.28, -123.36], [42.93, -123.28], [42.26, -121.79]] }
+```
+
+`kind: trail` (the default) draws dashed, `kind: paved` solid and quieter. Hovering a line shows its label.
+
 Keep it minimal — the generator themes on `type`, titles on `name`, and builds alias lookups from `aka`. Add keys only when the generator actually consumes them; descriptive facts (species, role, status) belong in the body.
 
 ## Content conventions

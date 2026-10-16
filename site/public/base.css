@@ -114,3 +114,9 @@ footer.site .frame { padding-top: 1rem; padding-bottom: 1.5rem; }
 .map-wrap .leaflet-container .leaflet-control-attribution a { color: var(--ink-soft); }
 #territory .leaflet-bar a { background: var(--surface); color: var(--ink-strong); border-bottom-color: var(--rule); }
 #territory .leaflet-bar a:hover { background: var(--bg); }
+.map-wrap .map-tooltip {
+  font-family: var(--serif); font-size: 0.8rem;
+  background: var(--surface); color: var(--ink-strong);
+  border: 1px solid var(--rule); border-radius: 2px; box-shadow: none;
+}
+.map-wrap .map-tooltip::before { display: none; }
