@@ -1,12 +1,15 @@
 ---
 import { THEME, universeName } from "../lib/site.mjs";
+import { mappedPlaces } from "../lib/map.mjs";
 
 const { title, section } = Astro.props;
 const name = await universeName();
+const hasMap = (await mappedPlaces()).length > 0;
 const nav = [
   ["/stories/", "Stories", "stories"],
   ["/characters/", "Characters", "characters"],
   ["/places/", "Places", "places"],
+  ...(hasMap ? [["/map/", "Map", "map"]] : []),
   ["/universe/", "Universe", "universe"],
   ["/threads/", "Threads", "threads"],
   ["/meta/", "Meta", "meta"],

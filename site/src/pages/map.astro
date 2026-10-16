@@ -1,0 +1,55 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { mappedPlaces } from "../lib/map.mjs";
+import { glyphSvg } from "../lib/glyphs.mjs";
+
+const markers = (await mappedPlaces()).map((m) => ({ ...m, svg: glyphSvg(m.glyph) }));
+---
+<Layout title="Map" section="map">
+  <article class="prose">
+    <h1>The territory</h1>
+    {markers.length === 0 ? (
+      <p>No charted places yet — give a place file <code>map</code> coordinates and it appears here.</p>
+    ) : (
+      <p>The known territory. Each mark links to its dossier; the pins are provisional.</p>
+    )}
+  </article>
+  {markers.length > 0 && (
+    <div class="map-wrap">
+      <div id="territory"></div>
+    </div>
+  )}
+  <script type="application/json" id="map-data" set:html={JSON.stringify(markers)} />
+  <script>
+    import L from "leaflet";
+    import "leaflet/dist/leaflet.css";
+
+    const el = document.getElementById("territory");
+    const markers = JSON.parse(document.getElementById("map-data").textContent);
+    if (el && markers.length) {
+      const map = L.map(el, { scrollWheelZoom: false, maxZoom: 13, attributionControl: true });
+      map.attributionControl.setPrefix("");
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "Imagery &copy; Esri &amp; contributors", maxZoom: 13 }
+      ).addTo(map);
+
+      const bounds = [];
+      for (const m of markers) {
+        const icon = L.divIcon({
+          className: "map-glyph",
+          html: `${m.svg}<span class="map-glyph-label">${m.name}</span>`,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
+          popupAnchor: [0, -10],
+        });
+        L.marker([m.lat, m.lng], { icon, title: m.name })
+          .addTo(map)
+          .bindPopup(`<a href="${m.href}">${m.name}</a>`);
+        bounds.push([m.lat, m.lng]);
+      }
+      // extra bottom padding: the name labels hang below the icons
+      map.fitBounds(bounds, { paddingTopLeft: [40, 40], paddingBottomRight: [40, 75], maxZoom: 9 });
+    }
+  </script>
+</Layout>

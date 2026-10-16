@@ -85,6 +85,17 @@ group: ravens           # optional; slug of the group page
 
 A story's `README.md` carries `name` and `type: story`.
 
+A **place** file may also carry `map` coordinates, which put it on the site's territory map (the page appears only when at least one place has them):
+
+```yaml
+map: { lat: 43.59, lng: -122.65, glyph: gate }   # one marker, named after the place
+# or, for a cluster file, several markers deep-linking to its headings:
+map:
+  - { label: Sparta, anchor: sparta, lat: 42.93, lng: -123.28, glyph: wall }
+```
+
+`glyph` names a marker icon from the generator's set (`gate`, `wall`, `furrow`, `river`, `ear`, `tree`, `camp`); omit it for a plain pin. Coordinates are real-world anchors and can stay provisional — move them as canon firms up.
+
 Keep it minimal — the generator themes on `type`, titles on `name`, and builds alias lookups from `aka`. Add keys only when the generator actually consumes them; descriptive facts (species, role, status) belong in the body.
 
 ## Content conventions
