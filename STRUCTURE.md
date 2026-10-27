@@ -78,7 +78,7 @@ Every content page in `characters/`, `places/`, and top-level lore specs opens w
 ---
 name: Alyssa            # real name, never a nickname
 type: character         # character | place | group | lore | story
-aka: [Muninn, the quartermaster]   # every other name; as many as needed
+aka: [Muninn, the quartermaster]   # every OTHER name; never the character's own first name
 group: ravens           # optional; slug of the group page
 ---
 ```
@@ -105,7 +105,7 @@ routes:
 
 `kind: trail` (the default) draws dashed, `kind: paved` solid and quieter. Hovering a line shows its label.
 
-Keep it minimal — the generator themes on `type`, titles on `name`, and builds alias lookups from `aka`. Add keys only when the generator actually consumes them; descriptive facts (species, role, status) belong in the body.
+File names are keyed by the character's **full name** (`skylar-bakerson.md`, not `skylar.md`) when one is known; `name` carries it too. Keep it minimal — the generator themes on `type`, titles on `name`, and builds alias lookups from `aka`. Add keys only when the generator actually consumes them; descriptive facts (species, role, status) belong in the body.
 
 ## Content conventions
 
