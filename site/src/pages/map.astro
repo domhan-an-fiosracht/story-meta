@@ -23,11 +23,11 @@ const routes = await mappedRoutes();
     const el = document.getElementById("territory");
     const { markers, routes } = JSON.parse(document.getElementById("map-data").textContent);
     if (el && markers.length) {
-      const map = L.map(el, { scrollWheelZoom: false, maxZoom: 13, attributionControl: true });
+      const map = L.map(el, { scrollWheelZoom: false, maxZoom: 17, attributionControl: true });
       map.attributionControl.setPrefix("");
       L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        { attribution: "Imagery &copy; Esri &amp; contributors", maxZoom: 13 }
+        { attribution: "Imagery &copy; Esri &amp; contributors", maxZoom: 17 }
       ).addTo(map);
 
       const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#b0885a";
@@ -78,7 +78,7 @@ const routes = await mappedRoutes();
         bounds.push([m.lat, m.lng]);
       }
       // extra bottom padding: the name labels hang below the icons
-      map.fitBounds(bounds, { paddingTopLeft: [40, 40], paddingBottomRight: [40, 75], maxZoom: 9 });
+      map.fitBounds(bounds, { paddingTopLeft: [40, 40], paddingBottomRight: [40, 75], maxZoom: 15 });
       updateRouteLabels();
     }
   </script>
