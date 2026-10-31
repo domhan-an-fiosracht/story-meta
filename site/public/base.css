@@ -24,7 +24,7 @@
 
 * { box-sizing: border-box; }
 html { background: var(--bg); color: var(--ink); font-family: var(--serif); }
-body { margin: 0; min-height: 100vh; line-height: 1.6; font-size: 1.05rem; }
+body { margin: 0; min-height: 100vh; line-height: 1.6; font-size: 1.05rem; overflow-x: clip; }
 
 a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset: 3px; }
 a:hover { text-decoration-color: var(--accent); }
@@ -90,8 +90,13 @@ footer.site .frame { padding-top: 1rem; padding-bottom: 1.5rem; }
 }
 
 /* The territory map */
-.map-wrap { border: 1px solid var(--rule); background: var(--surface); }
-#territory { height: min(72vh, 620px); }
+/* The map breaks out of the prose measure and fills the viewport. */
+.map-wrap {
+  width: 100vw; margin-left: calc(50% - 50vw);
+  border: 1px solid var(--rule); border-left: 0; border-right: 0;
+  background: var(--surface);
+}
+#territory { height: calc(100dvh - 16rem); min-height: 420px; }
 .map-wrap .leaflet-container { background: var(--bg); font-family: var(--serif); }
 .map-wrap .leaflet-tile-pane { filter: saturate(0.3) brightness(0.8) contrast(0.95); }
 @media (prefers-color-scheme: light) {
