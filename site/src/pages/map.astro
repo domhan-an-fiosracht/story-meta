@@ -7,14 +7,9 @@ const markers = (await mappedPlaces()).map((m) => ({ ...m, svg: glyphSvg(m.glyph
 const routes = await mappedRoutes();
 ---
 <Layout title="Map" section="map">
-  <article class="prose">
-    <h1>The territory</h1>
-    {markers.length === 0 ? (
-      <p>No charted places yet — give a place file <code>map</code> coordinates and it appears here.</p>
-    ) : (
-      <p>The known territory. Each mark links to its dossier; the pins are provisional.</p>
-    )}
-  </article>
+  {markers.length === 0 && (
+    <p class="prose">No charted places yet — give a place file <code>map</code> coordinates and it appears here.</p>
+  )}
   {markers.length > 0 && (
     <div class="map-wrap">
       <div id="territory"></div>

@@ -1,16 +1,12 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { groupStories } from "../lib/stories.mjs";
 
-const roots = await getCollection("root");
-const readme = roots.find((e) => e.id === "readme");
-const Content = readme ? (await render(readme)).Content : null;
 const stories = groupStories(await getCollection("stories"));
 ---
 <Layout>
-  <div class="prose">{Content && <Content />}</div>
-  <h2>Read</h2>
+  <h1 class="index-title">Read</h1>
   <ul class="toc">
     {stories.map((s) => (
       <li>

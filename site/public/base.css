@@ -40,6 +40,7 @@ nav.primary a { color: var(--ink); text-decoration: none; }
 nav.primary a:hover, nav.primary a[aria-current="page"] { color: var(--accent); }
 
 main { max-width: var(--measure); margin: 0 auto; }
+.index-title { font-size: 1.85rem; line-height: 1.2; color: var(--ink-strong); margin: 0 0 1.2rem; }
 
 /* Ledger header for dossier pages */
 .ledger { margin-bottom: 2.2rem; padding-bottom: 1rem; border-bottom: 3px double var(--rule); }
@@ -82,8 +83,6 @@ main { max-width: var(--measure); margin: 0 auto; }
 .toc li { padding: 0.55rem 0; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
 .toc .hint { color: var(--ink-soft); font-size: 0.9rem; font-style: italic; }
 
-footer.site { margin-top: 4rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.85rem; }
-footer.site .frame { padding-top: 1rem; padding-bottom: 1.5rem; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -93,10 +92,16 @@ footer.site .frame { padding-top: 1rem; padding-bottom: 1.5rem; }
 /* The map breaks out of the prose measure and fills the viewport. */
 .map-wrap {
   width: 100vw; margin-left: calc(50% - 50vw);
-  border: 1px solid var(--rule); border-left: 0; border-right: 0;
+  margin-top: -2.5rem;   /* flush under the header */
   background: var(--surface);
+  flex: 1; display: flex; flex-direction: column; min-height: 0;
 }
-#territory { height: calc(100dvh - 16rem); min-height: 420px; }
+#territory { flex: 1; min-height: 320px; }
+/* On the map page the layout is a viewport-high column: the map takes whatever
+   the header leaves, however tall the header wraps. */
+body:has(#territory) { height: 100dvh; display: flex; flex-direction: column; }
+body:has(#territory) > .frame { flex: 1; display: flex; flex-direction: column; min-height: 0; padding-bottom: 0; }
+body:has(#territory) main { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 .map-wrap .leaflet-container { background: var(--bg); font-family: var(--serif); }
 .map-wrap .leaflet-tile-pane { filter: saturate(0.3) brightness(0.8) contrast(0.95); }
 @media (prefers-color-scheme: light) {
