@@ -20,7 +20,7 @@ STORY_PATH=/path/to/universe-repo npm run dev     # local preview
 | `README.md` | `/` |
 | `meta/README.md` | `/meta/` |
 | `meta/<topic>.md` | `/<topic>/` |
-| `meta/characters/<slug>.md` | `/characters/<slug>/` (README → `/characters/`) |
+| `meta/characters/<slug>.md` | `/characters/<slug>/` (README → `/characters/`, rendered as the roster: see [STRUCTURE.md](../STRUCTURE.md#character-roster)) |
 | `meta/places/<slug>.md` | `/places/<slug>/` (README → `/places/`) |
 | `story/NN-<slug>/README.md` | `/stories/<slug>/` |
 | `story/NN-<slug>/chapter-NN.md` | `/stories/<slug>/chapter-NN/` |

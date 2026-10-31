@@ -1,11 +1,56 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import { resolve } from "node:path";
+import { buildRoster } from "../../lib/roster.mjs";
 
 const entries = await getCollection("characters");
 const readme = entries.find((e) => e.id === "readme");
-const Content = readme ? (await render(readme)).Content : null;
+const roster = await buildRoster(readme, entries, resolve(process.cwd(), "story-content/meta/characters/README.md"));
+const jump = roster.sections.filter((s) => s.level === 2 && s.total > 0);
 ---
 <Layout title="Characters" section="characters">
-  <div class="prose">{Content ? <Content /> : <h1>Characters</h1>}</div>
+  <div class="roster">
+    <h1 class="roster-title">{roster.title}</h1>
+    {roster.intro.map((b) =>
+      b.kind === "html" ? <div class="prose roster-intro" set:html={b.html} /> : null
+    )}
+    {jump.length > 1 && (
+      <nav class="roster-jump" aria-label="Sections">
+        {jump.map((s) => <a href={`#${s.id}`}>{s.label}<span class="n">{s.total}</span></a>)}
+      </nav>
+    )}
+    {roster.sections.map((s) => (
+      <section class={`roster-sec roster-sec--h${s.level}`} id={s.id}>
+        <header>
+          {s.level === 2 ? <h2 set:html={s.heading} /> : <h3 set:html={s.heading} />}
+          {(s.count > 0 || s.group) && (
+            <span class="meta">
+              {s.count > 0 && <>{s.count} {s.count === 1 ? "entry" : "entries"}</>}
+              {s.group && <a href={s.group}>group page</a>}
+            </span>
+          )}
+        </header>
+        {s.blocks.map((b) =>
+          b.kind === "html" ? (
+            <div class="prose roster-note" set:html={b.html} />
+          ) : (
+            <ul class="roster-rows">
+              {b.rows.map((r) => (
+                <li class:list={["roster-row", { own: r.own, offpage: r.offpage }]}>
+                  <div class="who">
+                    {r.href ? <a href={r.href} set:html={r.label} /> : <span class="label" set:html={r.label} />}
+                    {r.rest && <span class="rest" set:html={` ${r.rest}`} />}
+                    {r.real && <span class="real" set:html={r.real} />}
+                  </div>
+                  <div class="what" set:html={r.what} />
+                  <div class="first">{r.offpage ? "not yet" : <span set:html={r.first} />}</div>
+                </li>
+              ))}
+            </ul>
+          )
+        )}
+      </section>
+    ))}
+  </div>
 </Layout>

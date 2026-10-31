@@ -22,7 +22,7 @@ The layout every universe repo follows: its stories and its `meta/` folders. The
     threads.md               # open threads / Chekhov inventory
     <topic>.md               # optional standalone lore specs (e.g. a writing system)
     characters/
-      README.md              # full roster, every named character, linked
+      README.md              # the roster: every named character, linked (see Character roster)
       <slug>.md              # one file per substantial character
       <group>.md             # group pages: short, connective, link members
       supporting.md          # texture cast, one linkable heading per person
@@ -69,6 +69,36 @@ until: 2035-03-17              # optional; last day of a scene spanning several
 ```
 
 **Inside either:** `---` is a scene break. An optional `<!-- scene: slug -->` marker directly after a break (or at the top of the file) names the scene, so it can be addressed for rewrites and anchored by the generator. In-world date lines (*Day three. The last evening with power.*) are prose and stay in the text.
+
+## Character roster
+
+`characters/README.md` is the roster, and the generator renders it as the site's `/characters/` page. Every universe writes it in the same shape ([template](templates/characters-README.md)):
+
+```markdown
+# Characters
+
+One or two lines of intro.
+
+## The crew ([group](crew.md))
+
+| Who | What | First |
+|---|---|---|
+| [Wren](wren-holt.md) | One line: who they are. | ch 1 |
+| [The twins](crew.md#the-twins) | Texture characters link their heading. | ch 4 |
+
+## Not yet on page
+
+| Who | What | First |
+|---|---|---|
+| [Ines](ines-varga.md) | Planned. | |
+```
+
+- **Sections** are `##` headings (factions, groups, "Mentioned only"); `###` nests a subsection under a `##` part. A trailing `([group](<group>.md))` on the heading links the group page.
+- **Who** is the link and nothing else: the name the narration uses. The generator adds the real name from the linked file's `name` and bolds everyone with their own file. For a texture character with a real name and no file, write it after a colon: `[Mags](crew.md#mags): Margaret Doyle`.
+- **What** is one line, optional. **First** is a citation, optional; when a table has a First column, an empty cell means not yet on page and the row is dimmed.
+- One person per row, so every row links somewhere.
+- Text that isn't a `Who` table (a paragraph of one-line extras, a note) renders as-is inside its section.
+- The build warns about any character file the roster never links.
 
 ## Frontmatter
 
