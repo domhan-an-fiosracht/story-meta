@@ -1,0 +1,46 @@
+---
+// One year of a scene story: every day with scenes, grouped by month.
+import Layout from "../layouts/Layout.astro";
+import { longDate } from "../lib/scenes.mjs";
+
+const { year, idx, storyName, prev, next } = Astro.props;
+const list = idx.years.get(year);
+const days = new Map();
+for (const s of list) {
+  if (!days.has(s.date)) days.set(s.date, []);
+  days.get(s.date).push(s);
+}
+const months = new Map();
+for (const [date, scenes] of days) {
+  const m = date.slice(0, 7);
+  if (!months.has(m)) months.set(m, []);
+  months.get(m).push([date, scenes]);
+}
+const monthName = (m) => new Date(`${m}-01T00:00:00Z`).toLocaleString("en-US", { month: "long", timeZone: "UTC" });
+---
+<Layout title={`${year} — ${storyName}`} section="stories">
+  <div class="prose">
+    <h1>{year}</h1>
+    <p class="hint">{list.length} scenes across {days.size} days</p>
+  </div>
+  {[...months].map(([m, entries]) => (
+    <section class="month">
+      <h2>{monthName(m)}</h2>
+      <ul class="days">
+        {entries.map(([date, scenes]) => (
+          <li id={date}>
+            <span class="day">{longDate(date).split(",")[0]} {Number(date.slice(8))}</span>
+            <span class="day-scenes">
+              {scenes.map((s) => <a href={s.href}>{String(s.n).padStart(2, "0")} {s.povName}</a>)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+  <nav class="chapter-nav">
+    <span>{prev && <a href={`${idx.base}${prev}/`}>← {prev}</a>}</span>
+    <span><a href={idx.base}>All years</a></span>
+    <span>{next && <a href={`${idx.base}${next}/`}>{next} →</a>}</span>
+  </nav>
+</Layout>

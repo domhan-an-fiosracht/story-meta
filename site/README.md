@@ -19,12 +19,14 @@ STORY_PATH=/path/to/universe-repo npm run dev     # local preview
 |---|---|
 | `README.md` | `/` |
 | `meta/README.md` | `/meta/` |
-| `meta/<topic>.md` | `/<topic>/` |
+| `meta/<topic>.md` | `/<topic>/` (`universe`, `timeline`, `calendar` and `threads` also get a nav link when present) |
 | `meta/characters/<slug>.md` | `/characters/<slug>/` (README → `/characters/`, rendered as the roster: see [STRUCTURE.md](../STRUCTURE.md#character-roster)) |
 | `meta/places/<slug>.md` | `/places/<slug>/` (README → `/places/`) |
 | `story/NN-<slug>/README.md` | `/stories/<slug>/` |
 | `story/NN-<slug>/chapter-NN.md` | `/stories/<slug>/chapter-NN/` |
-| `story/NN-<slug>/YYYY/<scene>.md` | `/stories/<slug>/YYYY-<scene>/` |
+| `story/NN-<slug>/YYYY/[YYYY-MM-DD/]<scene>.md` | `/stories/<slug>/<scene>/` |
+| a scene story's year | `/stories/<slug>/YYYY/` |
+| `meta/calendar.md` | `/calendar/` and `/calendar/YYYY/` |
 
 Relative `.md` links in the repo (anchors included) are rewritten to these routes at build time, so the meta's own hyperlinks just work.
 

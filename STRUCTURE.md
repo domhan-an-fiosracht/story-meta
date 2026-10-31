@@ -13,11 +13,14 @@ The layout every universe repo follows: its stories and its `meta/` folders. The
       chapter-NN.md …        # a chapter story, or…
       YYYY/
         YYYY-MM-DD-NN-<pov>.md …  # …a scene story (see Story files)
+        YYYY-MM-DD/               # optional day folder for big years
+          YYYY-MM-DD-NN-<pov>.md …
       meta/                  # optional; only what this story needs to narrow
   meta/
     README.md                # index: map of everything + conventions
     universe.md              # setting, factions, systems, glossary
     timeline.md              # optional event spine
+    calendar.md              # optional; school-year overlay for the site calendar
     voice.md                 # style guide + known failure modes
     threads.md               # open threads / Chekhov inventory
     <topic>.md               # optional standalone lore specs (e.g. a writing system)
@@ -58,15 +61,20 @@ title: The Crossing
 ---
 ```
 
-**Scenes** — for stories told by date and point of view: `YYYY/YYYY-MM-DD-NN-<pov>.md`. `NN` orders events within a day; the same date and `NN` under a different `<pov>` is the same event retold. `<pov>` is a character slug, or a short label when no one character holds the scene (`montage`). Date and POV come from the filename and nowhere else. Frontmatter:
+**Scenes** — for stories told by date and point of view: `YYYY/YYYY-MM-DD-NN-<pov>.md`. `NN` orders events within a day; the same date and `NN` under a different `<pov>` is the same event retold. `<pov>` is a character slug, or a short label when no one character holds the scene (`montage`). Date and POV come from the filename and nowhere else. A year with too many scenes to browse (GitHub lists at most 1,000 files per folder) may file them in day folders, `YYYY/YYYY-MM-DD/YYYY-MM-DD-NN-<pov>.md`; the filename stays the same and the folder never reaches a URL. Frontmatter:
 
 ```yaml
 ---
 characters: [harper, cassie]   # slugs of everyone on page
 title: First Day               # optional
 until: 2035-03-17              # optional; last day of a scene spanning several
+arc: harper-first-week         # optional; the thread of scenes this one belongs to
+prompt: Harper's first day…    # optional; the beat this scene drafts
+next: 2035-03-18-01-harper     # optional; override the reading order (also prev:)
 ---
 ```
+
+The site reads a scene story in timeline order. With `arc`, it follows the arc instead (then the same point-of-view character, then the timeline), shows "N of M" in the arc, and lists other arcs' scenes from the same day. Scenes sharing a `prompt` of eight words or more are shown as alternate renditions of the same beat; an arc ending `-take-N` is a re-run of that arc.
 
 **Inside either:** `---` is a scene break. An optional `<!-- scene: slug -->` marker directly after a break (or at the top of the file) names the scene, so it can be addressed for rewrites and anchored by the generator. In-world date lines (*Day three. The last evening with power.*) are prose and stay in the text.
 
@@ -124,7 +132,7 @@ map:
   - { label: Sparta, anchor: sparta, lat: 42.93, lng: -123.28, glyph: wall }
 ```
 
-`glyph` names a marker icon from the generator's set (`gate`, `wall`, `furrow`, `river`, `ear`, `tree`, `camp`, `site`); omit it for a plain pin. Coordinates are real-world anchors and can stay provisional — move them as canon firms up.
+`glyph` names a marker icon from the generator's set (`gate`, `wall`, `furrow`, `river`, `ear`, `tree`, `camp`, `site`, `house`, `bell`, `cross`, `cup`, `shield`, `book`); omit it for a plain pin. Coordinates are real-world anchors and can stay provisional — move them as canon firms up.
 
 A place file may also carry `routes` — roads or trails drawn as lines on the same map:
 
@@ -136,6 +144,22 @@ routes:
 `kind: trail` (the default) draws dashed, `kind: paved` solid and quieter. Hovering a line shows its label.
 
 File names are keyed by the character's **full name** (`skylar-bakerson.md`, not `skylar.md`) when one is known; `name` carries it too. Keep it minimal — the generator themes on `type`, titles on `name`, and builds alias lookups from `aka`. Add keys only when the generator actually consumes them; descriptive facts (species, role, status) belong in the body.
+
+## Calendar
+
+`meta/calendar.md` (`type: lore`) turns on the site's `/calendar/` pages: the real calendar, year by year, with dated `timeline.md` rows, scene counts per day, and school years laid over it. Its body is the calendar page's intro; its frontmatter lists the school years:
+
+```yaml
+school:
+  - label: District K–12, 2034–35
+    track: district
+    first: 2034-09-05
+    last: 2035-06-08
+    off:
+      - { from: 2034-12-23, to: 2035-01-02, label: Winter break }
+```
+
+A `timeline.md` row counts as dated when its first cell is an exact day like `Wed Jul 14 2032` (a leading `~` means "about").
 
 ## Content conventions
 

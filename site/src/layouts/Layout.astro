@@ -1,17 +1,23 @@
 ---
+import { getCollection } from "astro:content";
 import { THEME, universeName } from "../lib/site.mjs";
 import { mappedPlaces } from "../lib/map.mjs";
 
 const { title, section } = Astro.props;
 const name = await universeName();
 const hasMap = (await mappedPlaces()).length > 0;
+// Lore pages get a nav link only when the universe has them.
+const lore = new Set((await getCollection("lore")).map((e) => e.id));
+const ifLore = (id, label) => (lore.has(id) ? [[`/${id}/`, label, id]] : []);
 const nav = [
   ["/stories/", "Stories", "stories"],
   ["/characters/", "Characters", "characters"],
   ["/places/", "Places", "places"],
   ...(hasMap ? [["/map/", "Map", "map"]] : []),
-  ["/universe/", "Universe", "universe"],
-  ["/threads/", "Threads", "threads"],
+  ...ifLore("universe", "Universe"),
+  ...ifLore("timeline", "Timeline"),
+  ...ifLore("calendar", "Calendar"),
+  ...ifLore("threads", "Threads"),
   ["/meta/", "Meta", "meta"],
 ];
 ---

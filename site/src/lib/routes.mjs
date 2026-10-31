@@ -19,11 +19,10 @@ export function routeForRepoPath(repoPath) {
   if ((m = anchorless.match(/^meta\/README\.md$/))) return "/meta/";
   if ((m = anchorless.match(/^meta\/(.+)\.md$/))) return `/${m[1]}/`;
   if ((m = anchorless.match(/^story\/([^/]+)\/README\.md$/))) return `/stories/${storySlug(m[1])}/`;
-  if ((m = anchorless.match(/^story\/([^/]+)\/(.+)\.md$/))) {
-    const story = storySlug(m[1]);
-    const rest = m[2].replace(/\//g, "-"); // scene files live under YYYY/
-    return `/stories/${story}/${rest}/`;
-  }
+  // Scene files live under YYYY/ (and optionally YYYY-MM-DD/); the route is the filename.
+  if ((m = anchorless.match(/^story\/([^/]+)\/\d{4}\/(?:\d{4}-\d{2}-\d{2}\/)?([^/]+)\.md$/)))
+    return `/stories/${storySlug(m[1])}/${m[2]}/`;
+  if ((m = anchorless.match(/^story\/([^/]+)\/(.+)\.md$/))) return `/stories/${storySlug(m[1])}/${m[2]}/`;
   if ((m = anchorless.match(/^README\.md$/))) return "/";
   return null;
 }

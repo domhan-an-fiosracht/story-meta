@@ -171,3 +171,50 @@ body:has(#territory) main { flex: 1; display: flex; flex-direction: column; min-
 .map-wrap .map-route-label::before { display: none; }
 .map-wrap .map-route-label--trail { color: var(--accent); }
 .map-wrap .map-route-label--paved { color: var(--ink-soft); }
+
+/* Scenes */
+.scene-head { margin-bottom: 1.5rem; }
+.scene-head h1 { font-size: 1.85rem; line-height: 1.2; color: var(--ink-strong); margin: 0.2rem 0 0.3rem; }
+.scene-head h1 a { color: inherit; text-decoration: none; }
+.scene-head h1 a:hover { color: var(--accent); }
+.scene-date { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+.scene-date a { color: var(--ink-soft); }
+.scene-title { color: var(--ink-soft); font-weight: 400; }
+.alts { display: flex; flex-wrap: wrap; gap: 0.4rem 0.8rem; align-items: baseline; margin: 0 0 1.8rem; padding: 0.6rem 0.8rem; background: var(--surface); border-left: 2px solid var(--accent); font-size: 0.95rem; }
+.alts-label { color: var(--ink-soft); font-style: italic; }
+.renditions { margin-top: 2.5rem; }
+.renditions h2 { font-size: 1.1rem; color: var(--ink-strong); }
+.month h2 { font-size: 1.2rem; color: var(--ink-strong); margin: 2rem 0 0.5rem; }
+.days { list-style: none; padding: 0; margin: 0; }
+.days li { display: flex; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.days .day { flex: 0 0 7.5rem; color: var(--ink-soft); font-size: 0.92rem; }
+.days .day-scenes { display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; font-size: 0.95rem; }
+.chapter-nav span:last-child { text-align: right; }
+@media (max-width: 40rem) { .days li { flex-direction: column; gap: 0.2rem; } .days .day { flex: none; } }
+.scene-arc { margin: 0; color: var(--accent); font-size: 0.95rem; }
+
+/* The calendar */
+.cal-legend { display: flex; flex-wrap: wrap; gap: 1.2rem; margin: 0.5rem 0 1.5rem; font-size: 0.85rem; }
+.cal-key { display: inline-block; width: 0.9em; height: 0.9em; vertical-align: -0.1em; margin-right: 0.35em; border: 1px solid var(--rule); border-radius: 2px; }
+.cal-key--session { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.cal-key--off { background: repeating-linear-gradient(135deg, transparent 0 3px, color-mix(in srgb, var(--ink-soft) 35%, transparent) 3px 4px); }
+.cal-key--event { background: var(--accent); border-color: var(--accent); }
+.cal-key--scenes { border-radius: 50%; background: var(--surface); }
+.cal-year { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.5rem 2rem; width: min(100vw - 2rem, 90rem); margin-left: calc(50% - min(50vw - 1rem, 45rem)); }
+.cal-month h2 { font-size: 1.05rem; margin: 0 0 0.4rem; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-dow { text-align: center; font-size: 0.7rem; color: var(--ink-soft); padding-bottom: 0.2rem; }
+.cal-cell { position: relative; min-height: 3.6rem; padding: 0.15rem 0.25rem; border: 1px solid var(--rule); border-radius: 2px; background: var(--surface); font-size: 0.72rem; line-height: 1.25; overflow: hidden; }
+.cal-cell--blank { border-color: transparent; background: none; }
+.cal-cell.is-weekend { background: color-mix(in srgb, var(--surface) 55%, var(--bg)); }
+.cal-cell.is-session { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); }
+.cal-cell.is-off { background: repeating-linear-gradient(135deg, var(--surface) 0 3px, color-mix(in srgb, var(--ink-soft) 25%, var(--surface)) 3px 4px); }
+.cal-cell.has-event { border-color: var(--accent); }
+.cal-n { display: block; font-size: 0.72rem; color: var(--ink-soft); }
+.cal-cell.is-session .cal-n, .cal-cell.has-event .cal-n { color: var(--ink-strong); }
+.cal-off { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-style: italic; color: var(--ink-soft); }
+.cal-event { display: block; color: var(--ink-strong); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.cal-event.is-strong { font-weight: 600; color: var(--accent); }
+.cal-scenes { position: absolute; right: 0.2rem; bottom: 0.15rem; min-width: 1.3em; padding: 0 0.3em; text-align: center; border-radius: 1em; border: 1px solid var(--rule); background: var(--bg); color: var(--ink-soft); text-decoration: none; font-size: 0.68rem; line-height: 1.5; }
+.cal-scenes:hover { color: var(--accent); border-color: var(--accent); }
+ul.years .hint { margin-left: 0.6em; }

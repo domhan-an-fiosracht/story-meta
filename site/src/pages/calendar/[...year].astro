@@ -1,0 +1,112 @@
+---
+// The calendar: only built when the universe has meta/calendar.md (see lib/calendar.mjs).
+// /calendar/ is the year list; /calendar/YYYY/ is one year's grid.
+import { render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { calendarEntry, calendarYears, timelineEvents, sceneCounts, yearGrid } from "../../lib/calendar.mjs";
+
+export async function getStaticPaths() {
+  if (!(await calendarEntry())) return [];
+  const years = await calendarYears();
+  return [
+    { params: { year: undefined }, props: { year: null, years } },
+    ...years.map((y) => ({ params: { year: String(y) }, props: { year: y, years } })),
+  ];
+}
+const { year, years } = Astro.props;
+let Content, perYear, months, tracks, events, prev, next;
+if (year === null) {
+  const all = await timelineEvents();
+  const counts = await sceneCounts();
+  Content = (await render(await calendarEntry())).Content;
+  perYear = (y) => ({
+    events: all.filter((e) => e.date.startsWith(`${y}-`)).length,
+    scenes: [...counts].filter(([d]) => d.startsWith(`${y}-`)).reduce((a, [, c]) => a + c.count, 0),
+  });
+} else {
+  ({ months, tracks, events } = await yearGrid(year));
+  const i = years.indexOf(year);
+  prev = years[i - 1];
+  next = years[i + 1];
+}
+const long = (d) => new Date(`${d}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
+---
+{year === null ? (
+  <Layout title="Calendar" section="calendar">
+    <div class="prose">
+      {Content ? <Content /> : <h1>Calendar</h1>}
+    </div>
+    <ul class="toc years">
+      {years.map((y) => {
+        const p = perYear(y);
+        return (
+          <li>
+            <a href={`/calendar/${y}/`}>{y}</a>
+            <span class="hint">{p.events ? `${p.events} dated event${p.events === 1 ? "" : "s"}` : ""}{p.events && p.scenes ? " · " : ""}{p.scenes ? `${p.scenes} scene${p.scenes === 1 ? "" : "s"}` : ""}</span>
+          </li>
+        );
+      })}
+    </ul>
+  </Layout>
+) : (
+  <Layout title={`${year} calendar`} section="calendar">
+    <article class="prose">
+      <h1>{year}</h1>
+      {tracks.length > 0 && (
+        <p class="hint">
+          In session: {tracks.map((t, k) => <span>{k > 0 && " · "}{t.label} ({long(t.first)} – {long(t.last)})</span>)}
+        </p>
+      )}
+    </article>
+  
+    <div class="cal-legend hint">
+      <span><i class="cal-key cal-key--session"></i> school day</span>
+      <span><i class="cal-key cal-key--off"></i> no school</span>
+      <span><i class="cal-key cal-key--event"></i> timeline event</span>
+      <span><i class="cal-key cal-key--scenes"></i> scenes that day</span>
+    </div>
+  
+    <div class="cal-year">
+      {months.map((mo) => (
+        <section class="cal-month">
+          <h2 id={`m${mo.m + 1}`}>{mo.name}</h2>
+          <div class="cal-grid">
+            {["S", "M", "T", "W", "T", "F", "S"].map((d) => <div class="cal-dow">{d}</div>)}
+            {mo.cells.map((c) =>
+              c === null ? <div class="cal-cell cal-cell--blank"></div> : (
+                <div
+                  class:list={["cal-cell", { "is-weekend": c.weekend, "is-session": c.session.length > 0, "is-off": c.off.length > 0, "has-event": c.events.length > 0 }]}
+                  id={c.date}
+                  title={[
+                    c.session.length ? `In session: ${c.session.join(", ")}` : "",
+                    ...c.off.map((o) => `${o.label} (${o.track})`),
+                    ...c.events.map((e) => `${e.approx ? "~" : ""}${e.label}`),
+                  ].filter(Boolean).join("\n")}
+                >
+                  <span class="cal-n">{c.n}</span>
+                  {c.off.filter((o) => o.first).map((o) => <span class="cal-off">{o.label}</span>)}
+                  {c.events.map((e) => <span class:list={["cal-event", { "is-strong": e.strong }]}>{e.approx && "~"}{e.label}</span>)}
+                  {c.scenes > 0 && <a class="cal-scenes" href={c.scenesHref} title={`${c.scenes} scene${c.scenes === 1 ? "" : "s"}`}>{c.scenes}</a>}
+                </div>
+              )
+            )}
+          </div>
+        </section>
+      ))}
+    </div>
+  
+    {events.length > 0 && (
+      <section class="prose">
+        <h2>Dated events</h2>
+        <ul>
+          {events.map((e) => <li><a href={`#${e.date}`}>{long(e.date)}</a> — {e.strand && <span class="hint">{e.strand} · </span>}{e.approx && "about "}{e.label}</li>)}
+        </ul>
+      </section>
+    )}
+  
+    <nav class="chapter-nav">
+      <span>{prev && <a href={`/calendar/${prev}/`} rel="prev">← {prev}</a>}</span>
+      <span>{next && <a href={`/calendar/${next}/`} rel="next">{next} →</a>}</span>
+    </nav>
+  </Layout>
+)}

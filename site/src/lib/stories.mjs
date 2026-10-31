@@ -1,7 +1,9 @@
 import { storySlug } from "./routes.mjs";
 
 // Entry ids look like "01-crossing/chapter-12", "01-crossing/README",
-// or "02-foo/2035/2035-03-17-01-harper" for scene stories.
+// or "02-foo/2035/2035-03-17-01-harper" for scene stories (optionally with a
+// day folder: "02-foo/2035/2035-03-17/2035-03-17-01-harper"). A scene's id is
+// its filename stem, so the day folder never shows up in a URL.
 export function parseStoryEntry(entry) {
   const [dir, ...rest] = entry.id.split("/");
   const slug = storySlug(dir);
@@ -15,8 +17,9 @@ export function parseStoryEntry(entry) {
   if ((m = stem.match(/^chapter-(\d+)$/)))
     return { kind: "chapter", dir, slug, order, n: parseInt(m[1], 10), id: flat, entry };
 
-  if ((m = flat.match(/^(\d{4})-(\d{4}-\d{2}-\d{2})-(\d+)-(.+)$/)))
-    return { kind: "scene", dir, slug, order, date: m[2], n: parseInt(m[3], 10), pov: m[4], id: flat, entry };
+  const file = rest[rest.length - 1];
+  if (/^\d{4}$/.test(rest[0] ?? "") && (m = file.match(/^(\d{4}-\d{2}-\d{2})-(\d+)-(.+)$/)))
+    return { kind: "scene", dir, slug, order, date: m[1], n: parseInt(m[2], 10), pov: m[3], id: file, entry };
 
   return { kind: "other", dir, slug, order, id: flat, entry };
 }

@@ -1,37 +1,60 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
+import Scene from "../../../components/Scene.astro";
+import SceneYear from "../../../components/SceneYear.astro";
 import { groupStories, partTitle, bodyHasOwnHeading } from "../../../lib/stories.mjs";
+import { sceneStories } from "../../../lib/scenes.mjs";
 
+// One route for every page inside a story: chapters, scenes, and (for scene
+// stories) one index page per year.
 export async function getStaticPaths() {
   const stories = groupStories(await getCollection("stories"));
-  return stories.flatMap((s) =>
-    s.parts.map((p, i) => ({
+  const scened = await sceneStories();
+  return stories.flatMap((s) => {
+    const storyName = s.readme?.data?.name ?? s.slug;
+    const idx = scened.get(s.slug);
+    if (idx) {
+      const ys = [...idx.years.keys()];
+      return [
+        ...idx.scenes.map((sc) => ({ params: { story: s.slug, part: sc.id }, props: { kind: "scene", sc, storyName } })),
+        ...ys.map((y, i) => ({
+          params: { story: s.slug, part: y },
+          props: { kind: "year", year: y, idx, storyName, prev: ys[i - 1] ?? null, next: ys[i + 1] ?? null },
+        })),
+      ];
+    }
+    return s.parts.map((p, i) => ({
       params: { story: s.slug, part: p.id },
       props: {
+        kind: "chapter",
         p,
-        storyName: s.readme?.data?.name ?? s.slug,
+        storyName,
         prev: i > 0 ? { id: s.parts[i - 1].id, title: partTitle(s.parts[i - 1]) } : null,
         next: i < s.parts.length - 1 ? { id: s.parts[i + 1].id, title: partTitle(s.parts[i + 1]) } : null,
       },
-    }))
-  );
+    }));
+  });
 }
-const { p, storyName, prev, next } = Astro.props;
-const { Content } = await render(p.entry);
-const title = partTitle(p);
+const props = Astro.props;
 const storyBase = `/stories/${Astro.params.story}/`;
+const Content = props.kind === "chapter" ? (await render(props.p.entry)).Content : null;
+const title = props.kind === "chapter" ? partTitle(props.p) : null;
 ---
-<Layout title={`${title} — ${storyName}`} section="stories">
-  <article class="chapter">
-    <div class="prose">
-      {!bodyHasOwnHeading(p) && <h1>{title}</h1>}
-      <Content />
-    </div>
-  </article>
-  <nav class="chapter-nav">
-    <span>{prev && <a href={`${storyBase}${prev.id}/`}>← {prev.title}</a>}</span>
-    <span><a href={storyBase}>Contents</a></span>
-    <span>{next && <a href={`${storyBase}${next.id}/`}>{next.title} →</a>}</span>
-  </nav>
-</Layout>
+{props.kind === "scene" && <Scene sc={props.sc} storyName={props.storyName} />}
+{props.kind === "year" && <SceneYear {...props} />}
+{props.kind === "chapter" && (
+  <Layout title={`${title} — ${props.storyName}`} section="stories">
+    <article class="chapter">
+      <div class="prose">
+        {!bodyHasOwnHeading(props.p) && <h1>{title}</h1>}
+        <Content />
+      </div>
+    </article>
+    <nav class="chapter-nav">
+      <span>{props.prev && <a href={`${storyBase}${props.prev.id}/`}>← {props.prev.title}</a>}</span>
+      <span><a href={storyBase}>Contents</a></span>
+      <span>{props.next && <a href={`${storyBase}${props.next.id}/`}>{props.next.title} →</a>}</span>
+    </nav>
+  </Layout>
+)}

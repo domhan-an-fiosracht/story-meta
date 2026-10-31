@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
 import { groupStories, partTitle, bodyStartsWithHeading } from "../../../lib/stories.mjs";
+import { sceneIndex, sceneLabel } from "../../../lib/scenes.mjs";
 
 export async function getStaticPaths() {
   const stories = groupStories(await getCollection("stories"));
@@ -10,16 +11,27 @@ export async function getStaticPaths() {
 const { s } = Astro.props;
 const Content = s.readme ? (await render(s.readme)).Content : null;
 const name = s.readme?.data?.name ?? s.slug;
+// A scene story's contents is its years; each year page lists its days.
+const idx = await sceneIndex(s.slug);
 ---
 <Layout title={name} section="stories">
   <div class="prose">
     {!(s.readme && bodyStartsWithHeading(s.readme)) && <h1>{name}</h1>}
     {Content && <Content />}
+    {idx && <p><a href={idx.scenes[0].href}>Start at the beginning: {sceneLabel(idx.scenes[0])} →</a></p>}
     <h2>Contents</h2>
   </div>
-  <ul class="toc">
-    {s.parts.map((p) => (
-      <li><a href={`/stories/${s.slug}/${p.id}/`}>{partTitle(p)}</a></li>
-    ))}
-  </ul>
+  {idx ? (
+    <ul class="toc years">
+      {[...idx.years].map(([y, list]) => (
+        <li><a href={`${idx.base}${y}/`}>{y}</a><span class="hint">{list.length} scenes</span></li>
+      ))}
+    </ul>
+  ) : (
+    <ul class="toc">
+      {s.parts.map((p) => (
+        <li><a href={`/stories/${s.slug}/${p.id}/`}>{partTitle(p)}</a></li>
+      ))}
+    </ul>
+  )}
 </Layout>

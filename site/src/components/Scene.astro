@@ -1,0 +1,53 @@
+---
+// One scene of a scene story, with its cross-links (see lib/scenes.mjs).
+import { render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { sceneLabel, longDate, arcName } from "../lib/scenes.mjs";
+
+const { sc: s, storyName } = Astro.props;
+const { Content } = await render(s.entry);
+
+---
+<Layout title={`${sceneLabel(s)} — ${storyName}`} section="stories">
+  <article class="chapter scene">
+    <header class="scene-head">
+      <p class="scene-date"><a href={`${s.base}${s.year}/#${s.date}`}>{longDate(s.date)}</a></p>
+      <h1>{s.povHref ? <a href={s.povHref}>{s.povName}</a> : s.povName}{s.title && <span class="scene-title"> — {s.title}</span>}</h1>
+      {s.arc && <p class="scene-arc">{arcName(s.arc)} <span class="hint">· {s.arcPos.n} of {s.arcPos.of}</span></p>}
+    </header>
+
+    {s.retellings.length > 0 && (
+      <nav class="alts">
+        <span class="alts-label">See this scene from</span>
+        {s.retellings.map((t) => <a href={t.href}>{t.povName}</a>)}
+      </nav>
+    )}
+
+    {s.elsewhere.length > 0 && (
+      <nav class="alts">
+        <span class="alts-label">Elsewhere that day</span>
+        {s.elsewhere.map((t) => <a href={t.href}>{arcName(t.arc)} ({t.povName})</a>)}
+      </nav>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  <nav class="chapter-nav">
+    <span>{s.prev && <a href={s.prev.href} rel="prev">← {sceneLabel(s.prev)}</a>}</span>
+    <span>{s.next && <a href={s.next.href} rel="next">{sceneLabel(s.next)} →</a>}</span>
+  </nav>
+
+  {s.renditions.length > 0 && (
+    <section class="renditions">
+      <h2>Other renditions of this scene</h2>
+      <ul class="toc">
+        {s.renditions.map((t) => (
+          <li><a href={t.href}>{sceneLabel(t)}</a><span class="hint">{String(t.n).padStart(2, "0")}</span></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Layout>

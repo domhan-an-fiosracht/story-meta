@@ -6,11 +6,12 @@ import Dossier from "../components/Dossier.astro";
 export async function getStaticPaths() {
   const entries = await getCollection("lore");
   return entries
-    .filter((e) => e.id !== "readme")
+    // meta/calendar.md is the calendar page's intro, rendered at /calendar/.
+    .filter((e) => e.id !== "readme" && e.id !== "calendar")
     .map((e) => ({ params: { slug: e.id }, props: { entry: e } }));
 }
 const { entry } = Astro.props;
-const section = ["universe", "threads"].includes(entry.id) ? entry.id : "meta";
+const section = ["universe", "timeline", "threads"].includes(entry.id) ? entry.id : "meta";
 ---
 <Layout title={entry.data?.name ?? entry.id} section={section}>
   <Dossier entry={entry} groupBase={null} />
