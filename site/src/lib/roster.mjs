@@ -46,6 +46,11 @@ function splitRow(line) {
   return cells;
 }
 
+// Roster rows render alphabetically by the name shown, whatever order the README lists them in.
+// A leading "The" is ignored, so "The twins" sorts under "twins".
+const collator = new Intl.Collator("en", { sensitivity: "base", numeric: true });
+const sortKey = (who) => plain(parseWho(who).label).replace(/^the\s+/i, "");
+
 const isTableLine = (l) => /^\s*\|/.test(l);
 const isDivider = (l) => /^\s*\|?\s*:?-{2,}/.test(l) && /^[\s|:-]+$/.test(l);
 
@@ -94,6 +99,7 @@ export function parseRoster(body) {
         const [wi, fi] = [col("what"), col("first")];
         const block = { kind: "rows", hasFirst: fi !== -1, rows: [] };
         for (const r of rows) block.rows.push({ who: r[0] ?? "", what: wi === -1 ? "" : r[wi] ?? "", first: fi === -1 ? "" : r[fi] ?? "" });
+        block.rows.sort((a, b) => collator.compare(sortKey(a.who), sortKey(b.who)));
         (sec ? sec.blocks : intro).push(block);
       } else {
         (sec ? sec.blocks : intro).push({ kind: "md", md: tbl.join("\n") });

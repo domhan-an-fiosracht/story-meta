@@ -104,7 +104,7 @@ One or two lines of intro.
 - **Sections** are `##` headings (factions, groups, "Mentioned only"); `###` nests a subsection under a `##` part. A trailing `([group](<group>.md))` on the heading links the group page.
 - **Who** is the link and nothing else: the name the narration uses. The generator adds the real name from the linked file's `name` and bolds everyone with their own file. For a texture character with a real name and no file, write it after a colon: `[Mags](crew.md#mags): Margaret Doyle`.
 - **What** is one line, optional. **First** is a citation, optional; when a table has a First column, an empty cell means not yet on page and the row is dimmed.
-- One person per row, so every row links somewhere.
+- One person per row, so every row links somewhere. Rows render alphabetically by the Who name (a leading "The" is ignored), so write them in any order.
 - Text that isn't a `Who` table (a paragraph of one-line extras, a note) renders as-is inside its section.
 - The build warns about any character file the roster never links.
 
